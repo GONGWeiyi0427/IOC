@@ -19,8 +19,7 @@ help:
 
 all: clean dep 
 
-dep : blink1_bp_pt.x
-#blink0.x blink0_pt.x blink1_pt.x read_bp.x 
+dep : blink1_bp_pt.x blink0.x blink0_pt.x blink1_pt.x read_bp.x 
 copy: *.x
 	scp -P 622$(RPI) $^ pi@peri:$(NAME)
 
