@@ -29,7 +29,7 @@
 int BP_ON = 0;
 int BP_OFF = 0;
 
-int val = 0;//Pour synchroniser les leds, il faut mettre le moment de changement l'etat est meme
+int val = 0;
 
 struct gpio_s
 {
@@ -147,18 +147,18 @@ void* clig0(void* freq)
 
     // Blink led at frequency of 1Hz
     // ---------------------------------------------
-    int etat = 0;//Initialier etat en 3 cas
+    int etat = 0;
 
 
     while (1) {
 
         if (BP_ON == 1){
             BP_ON = 0;
-            etat=etat+1;//Chaque fois on pousse le button, etat passe a l'etat suivant
+            etat=etat+1;
             
             if(etat==3)
             {
-                etat=0;//Si en etat2, le prochain est etat0
+                etat=0;
             }
 
         }
@@ -169,18 +169,18 @@ void* clig0(void* freq)
 
         if(etat==0)
         {   
-            gpio_write ( GPIO_LED0, 0 );//Si en etat0, led0 est eteinde
+            gpio_write ( GPIO_LED0, 0 );
         }
         else if(etat==1)
         {     
-            gpio_write ( GPIO_LED0, val );//Si en etat1, led0 a le meme frequence avec led1
+            gpio_write ( GPIO_LED0, val );
         }
         else if(etat==2)
         {
-            gpio_write ( GPIO_LED0, 1-val );//Si en etat2, led 0 a le frequence inverser avec led1
+            gpio_write ( GPIO_LED0, 1-val );
         }
         printf("etat=%d\n",etat);
-        delay ( freq_un );//Il faut ajoute un delay dans chaque cas
+        delay ( freq_un );
         
     }
     
@@ -198,7 +198,7 @@ void* clig1(void* freq)
     while (1) {
         gpio_write ( GPIO_LED1, val );
         delay ( freq_un );
-        val = 1 - val;//Changement de la valeur globale
+        val = 1 - val;
     }
 }
 

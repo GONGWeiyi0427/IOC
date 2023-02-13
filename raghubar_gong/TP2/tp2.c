@@ -1,7 +1,10 @@
+#include <stdio.h>
+#include <unistd.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <asm/io.h>
 #include <mach/platform.h>
+#include <errno.h>
 
 static const int LED0 = 4;
 
@@ -22,7 +25,7 @@ struct gpio_s
     uint32_t gppudclk[3];
     uint32_t test[1];
 }
-volatile *gpio_regs = (struct gpio_s *)__io_address(GPIO_BASE);
+volatile *gpio_regs = (struct gpio_s *)__io_address(GPIO_BASE);//Adresse virtuelle
 
 
 static void gpio_fsel(int pin, int fun)
@@ -39,4 +42,18 @@ static void gpio_write(int pin, bool val)
         gpio_regs->gpset[pin / 32] = (1 << (pin % 32));
     else
         gpio_regs->gpclr[pin / 32] = (1 << (pin % 32));
+}
+
+
+
+int main(void)
+{
+    int file = open("/dev/led_RG", O_RDWR);
+    if(file < 0) {
+        perror("open");
+        exit(errno);
+    }
+    write(file, "hello", 6);
+    close(file);
+    return 0;
 }

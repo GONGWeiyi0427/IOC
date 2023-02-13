@@ -67,13 +67,13 @@ gpio_write (uint32_t pin, uint32_t val)
 }
 
 static int 
-gpio_lev(uint32_t pin)//Fonction pour lire le input
+gpio_lev(uint32_t pin)
 {
     int lev;
-    uint32_t reg = pin / 32;//32 pins dans chaque registres
-    uint32_t bit = pin % 32;//Trouver le bon bit d'initialise
-    uint32_t mask = 1<<bit;//Initialiser un mask pour recuperer la valeur dans le registre
-    return lev=gpio_regs_virt->gplev[reg] & mask;//recuperer la valeur
+    uint32_t reg = pin / 32;
+    uint32_t bit = pin % 32;
+    uint32_t mask = 1<<bit;
+    return lev=gpio_regs_virt->gplev[reg] & mask;
 
 }
 
@@ -166,7 +166,7 @@ main ( int argc, char **argv )
 
     //gpio_fsel(GPIO_LED1, GPIO_FSEL_OUTPUT);
 
-    gpio_fsel(GPIO_BP, GPIO_FSEL_INPUT);//Initialiser fsel de input
+    gpio_fsel(GPIO_BP, GPIO_FSEL_INPUT);
 
     // Blink led at frequency of 1Hz
     // ---------------------------------------------
@@ -181,7 +181,7 @@ main ( int argc, char **argv )
             compte++;
             //delay(20);
             sleep(1);
-            printf("Porte bp:%d \n",compte);//Affichier la valeur de compteur
+            printf("Porte bp:%d \n",compte);
             
         }
     }

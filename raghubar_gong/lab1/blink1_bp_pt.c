@@ -151,9 +151,9 @@ void* clig0(void* freq)
 
     while (1) {
 
-        if (BP_ON == 1){//Si en etat quand on pousse le button
+        if (BP_ON == 1){
             BP_ON = 0;      
-            gpio_write ( GPIO_LED0, val );//On change la valeur de led0
+            gpio_write ( GPIO_LED0, val );
 
         }
         if (BP_OFF == 1){
@@ -184,7 +184,7 @@ void* clig1(void* freq)
     }
 }
 
-void* telerupteur(void* freq)//La fonction de controle de button
+void* telerupteur(void* freq)
 {
 
     unsigned freq_un = *((unsigned int*)freq);
@@ -194,19 +194,19 @@ void* telerupteur(void* freq)//La fonction de controle de button
     {
         delay(freq_un);
         val_nouv = gpio_read(GPIO_BP);
-        if(val_prec != val_nouv)//Si l'etat present est different avec l'etat precedant
+        if(val_prec != val_nouv)
         {
-            if(val_nouv == 0)//Si l'etat present est pousse
+            if(val_nouv == 0)
             {
                 BP_ON = 1;
                 
             }
-            else if(val_nouv == 1)//Si l'etat est relache
+            else if(val_nouv == 1)
             {
                 BP_OFF = 1;
                 
             }
-            val_prec = val_nouv;//couvrir l'etat precedant avec l'etat present
+            val_prec = val_nouv;
         }
     }
 }
@@ -293,7 +293,7 @@ main ( int argc, char **argv )
 
     pthread_create(&t1,NULL,clig0,&half_period);
     pthread_create(&t2,NULL,clig1,&period);
-    pthread_create(&t3,NULL,telerupteur,&period_bouton);//Creer pthread pour le button
+    pthread_create(&t3,NULL,telerupteur,&period_bouton);
     pthread_join(t1,NULL);
     pthread_join(t2,NULL);
     pthread_join(t3,NULL);

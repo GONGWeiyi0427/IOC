@@ -1,5 +1,5 @@
-NAME = raghubar_gong # nom1_nom2
-RPI ?= 20 # card_number
+NAME = raghubar_gong/lab2 # nom1_nom2
+RPI ?= 21 # card_number
 
 CROSS_COMPILE ?= bcm2708hardfp-
 
@@ -19,7 +19,7 @@ help:
 
 all: clean dep 
 
-dep : blink1_bp_pt.x
+dep : main.x
 #blink0.x blink0_pt.x blink1_pt.x read_bp.x 
 copy: *.x
 	scp -P 622$(RPI) $^ pi@peri:$(NAME)
