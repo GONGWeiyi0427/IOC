@@ -111,57 +111,21 @@ delay ( unsigned int milisec )
 int main(void)
 {
     
-    int val=0;
     int bp;
-    int etat=0;
 
     int file = open("/dev/led_RG", O_RDWR);
     int file1 = open("/dev/led1_RG", O_RDWR);
     int file2 = open("/dev/bp0_RG", O_RDWR);
-    if(file < 0) {
+    if(file < 0 || file1 < 0 || file2 < 0) {
         perror("open");
         exit(errno);
     }
 
-
-    int val_prec = 1;
-    int val_nouv = 1;
-    int BP_ON = 0;
-    int BP_OFF = 0;
     while(1)
     {
-        delay(20);
-        val_nouv=read(file2,'1',1);
-        //printf("val=%d",val_nouv);
-        if(val_prec != val_nouv)
-        {
-            if(val_nouv == 0)
-            {
-                BP_ON = 1;
-                
-            }
-            else if(val_nouv == 1)
-            {
-                BP_OFF = 1;
-                
-            }
-            val_prec = val_nouv;
-        }
-
-        //printf("BP_ON=%d\n",BP_ON);
-        //printf("BP_OFF=%d\n",BP_OFF);
-
-        if (BP_ON == 1){
-            BP_ON = 0;      
-            write(file, 'val',1);
-            write(file1,'val',1);
-            
-
-        }
-        if (BP_OFF == 1){
-            BP_OFF = 0;
-            val = 1 - val;
-        }
+        bp=read(file2,'1',1);
+       if(bp==0){write(file,'0',1);write(file1,'0',1);} 
+       else if(bp==1){write(file,'1',1);write(file1,'0',1);}
     }
 
 

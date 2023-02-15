@@ -29,7 +29,6 @@ MODULE_DESCRIPTION("Module, aussitot insere, aussitot efface");
 //     printk(KERN_DEBUG "btn=%d !\n", btn);
 //     return 0;
 // }
-static const int LED0 = 4;
 static const int LED1 = 17;
 
 struct gpio_s
@@ -87,7 +86,7 @@ write_led_XY(struct file *file, const char *buf, size_t count, loff_t *ppos) {
     int val;
     if(buf=='0')val=0;
     if(buf=='1')val=1;
-    gpio_write(LED0,val);
+    gpio_write(LED1,val);
     return count;
 }
 
@@ -113,16 +112,16 @@ MODULE_PARM_DESC(LEDS, "tableau des numéros de port LED");
 static int __init mon_module_init(void)
 {
     int i;
-    major = register_chrdev(0, "led_RG", &fops_led); // 0 est le numéro majeur qu'on laisse choisir par linux
+    major = register_chrdev(0, "led1_RG", &fops_led); // 0 est le numéro majeur qu'on laisse choisir par linux
     printk(KERN_DEBUG "Hello World R&G!\n");
     for (i=0; i < nbled; i++)
-       printk(KERN_DEBUG "LED_RG %d = %d\n", i, leds[i]);
+       printk(KERN_DEBUG "LED1_RG %d = %d\n", i, leds[i]);
     return 0;
 }
 
 static void __exit mon_module_cleanup(void)
 {
-    unregister_chrdev(major, "led_RG");
+    unregister_chrdev(major, "led1_RG");
    printk(KERN_DEBUG "Goodbye World <raghubar_gong> !\n");
 }
 
