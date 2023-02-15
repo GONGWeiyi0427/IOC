@@ -108,29 +108,68 @@ delay ( unsigned int milisec )
 //     return 0;
 // }
 
-int main(void)
-{
+// int main(void)
+// {
     
-    int bp;
+//     char bp;
 
-    int file = open("/dev/led_RG", O_RDWR);
-    int file1 = open("/dev/led1_RG", O_RDWR);
-    int file2 = open("/dev/bp0_RG", O_RDWR);
-    if(file < 0 || file1 < 0 || file2 < 0) {
-        perror("open");
-        exit(errno);
-    }
+//     int file = open("/dev/led_RG", O_RDWR);
+//     int file1 = open("/dev/led1_RG", O_RDWR);
+//     int file2 = open("/dev/bp0_RG", O_RDWR);
+//     if(file < 0 || file1 < 0 || file2 < 0) {
+//         perror("open");
+//         exit(errno);
+//     }
 
-    while(1)
-    {
-        bp=read(file2,'1',1);
-       if(bp==0){write(file,'0',1);write(file1,'0',1);} 
-       else if(bp==1){write(file,'1',1);write(file1,'0',1);}
-    }
+//     while(1)
+//     {
+//         read(file2,&bp,1);
+//        if(bp==0){write(file,'0',1);write(file1,'0',1);} 
+//        else if(bp==1){write(file,'1',1);write(file1,'1',1);}
+//     }
 
 
-    close(file);
-    close(file1);
-    close(file2);
-    return 0;
+//     close(file);
+//     close(file1);
+//     close(file2);
+//     return 0;
+// }
+int main()
+{
+   char led, bp='0';
+   int fdled0 = open("/dev/led_RG", O_WRONLY);
+   int fdbp = open("/dev/bp0_RG", O_RDONLY);
+   if ((fdled0 < 0)||(fdbp < 0)) {
+      fprintf(stderr, "Erreur d'ouverture des pilotes LED ou Boutons\n");
+      exit(1);
+   }
+   do { 
+      led = (led == '0') ? '1' : '0';
+        printf("led=%c",led);
+      write( fdled0, &led, 1);
+
+      sleep( 1);
+
+      read( fdbp, &bp, 1);
+      printf("bp=%c\n",bp);
+   } while (bp == '1');
+
+//    while(1)
+//    {
+//     if(bp == 0)
+//     {
+//       led = (led == '0') ? '1' : '0';
+//       printf("1");
+//       write( fdled0, &led, 1);
+//       printf("2");
+//       sleep( 1);
+//       printf("3");
+//       read( fdbp, &bp, 1);
+//       printf("bp=%c",bp);
+//     }
+//    }
+
+    close(fdled0);
+    close(fdbp);
+   return 0;
 }

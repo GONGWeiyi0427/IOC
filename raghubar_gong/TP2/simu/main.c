@@ -151,6 +151,11 @@ int main(void)
         //printf("BP_ON=%d\n",BP_ON);
         //printf("BP_OFF=%d\n",BP_OFF);
 
+
+    }
+
+    while(1)
+    {
         if (BP_ON == 1){
             BP_ON = 0;      
             write(file, 'val',1);
@@ -163,7 +168,6 @@ int main(void)
             val = 1 - val;
         }
     }
-
 
     close(file);
     close(file1);

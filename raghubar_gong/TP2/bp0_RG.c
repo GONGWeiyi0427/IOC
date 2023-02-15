@@ -88,9 +88,10 @@ open_led_XY(struct inode *inode, struct file *file) {
 static ssize_t 
 read_led_XY(struct file *file, char *buf, size_t count, loff_t *ppos) {
     printk(KERN_DEBUG "read()\n");
-    int val;
-    val=gpio_read(BP);
-    return val;
+    //int val;
+    char val=(char) gpio_read(BP);
+    *buf=val+'0';
+    return count;
 }
 
 static ssize_t 

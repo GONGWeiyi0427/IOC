@@ -84,9 +84,9 @@ read_led_XY(struct file *file, char *buf, size_t count, loff_t *ppos) {
 static ssize_t 
 write_led_XY(struct file *file, const char *buf, size_t count, loff_t *ppos) {
     printk(KERN_DEBUG "write()\n");
-    int val;
-    if(buf=='0')val=0;
-    if(buf=='1')val=1;
+    bool val;
+    if(*buf=='0')val=false;
+    if(*buf=='1')val=true;
     gpio_write(LED0,val);
     return count;
 }
