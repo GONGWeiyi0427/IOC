@@ -1,0 +1,6 @@
+Board : TTGO LoRa32-OLED
+
+Buzzer pin 17
+
+Normally with ESP32, the tone() function does not work, but with the TTGO LoRa32-OLED as board, it seems 
+to work alright.
