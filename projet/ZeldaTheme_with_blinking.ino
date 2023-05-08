@@ -1,9 +1,8 @@
 /* 
   The legend of Zelda theme 
-  Connect a piezo buzzer or speaker to pin 11 or select a new pin.
-  More songs available at https://github.com/robsoncouto/arduino-songs                                            
-                                              
-                                              Robson Couto, 2019
+  Connect a piezo buzzer or speaker to pin 17.
+  On souhaite remercier Robson Couto pour le code source de la musique qu'on a utilisé dans notre projet.
+  More songs available at https://github.com/robsoncouto/arduino-songs
 */
 
 #define NOTE_B0  31
@@ -97,12 +96,11 @@
 #define NOTE_DS8 4978
 #define REST 0
 
-
+//Ici j'ai créer une fonction pour manipuler plus facilement plusieurs musiques
 void play_zelda(){
-  
-int tempo=340; 
+int tempo=340; //de base tempo vallait 170, mais vu qu'on fait le blink aussi(qui nous ralenti par 2x), on a doublé le tempo (pour aller 2x plus vite)
 
-// change this to whichever pin you want to use
+// change this to whichever pin you want to 
 int buzzer = 17;
 pinMode(LED_BUILTIN, OUTPUT);
 //int led = 2; //We will be blinking the LED in sync with the music !!
@@ -112,7 +110,6 @@ pinMode(LED_BUILTIN, OUTPUT);
 // !!negative numbers are used to represent dotted notes,
 // so -4 means a dotted quarter note, that is, a quarter plus an eighteenth!!
 int melody[] = {
-
   //Based on the arrangement at https://www.flutetunes.com/tunes.php?id=169
   
   NOTE_AS4,-2,  NOTE_F4,8,  NOTE_F4,8,  NOTE_AS4,8,//1
@@ -159,6 +156,7 @@ int divider = 0, noteDuration = 0;
 
 // iterate over the notes of the melody. 
   // Remember, the array is twice the number of notes (notes + durations)
+  //ici nous avons le traitement des delais, fréquence et note de la musique.
   for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
 
     // calculates the duration of each note
@@ -175,7 +173,7 @@ int divider = 0, noteDuration = 0;
     // we only play the note for 90% of the duration, leaving 10% as a pause
     tone(buzzer, melody[thisNote], noteDuration*0.9);
     tone(LED_BUILTIN, melody[thisNote], noteDuration*0.9);
-    // Wait for the specief duration before playing the next note.
+    // Wait for the specified duration before playing the next note.
     delay(noteDuration);
     
     // stop the waveform generation before the next note.
