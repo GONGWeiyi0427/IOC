@@ -110,7 +110,8 @@ void connect_rasp()   // Connect with raspberry mqtt mosquitto
   }
 }
 
-/*
+char buf[50];
+
 void callback(const char* topic,byte* payload,unsigned int length)
 {
   String Topic = String(topic);
@@ -140,7 +141,7 @@ void callback(const char* topic,byte* payload,unsigned int length)
 
   
 }
-*/
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -151,7 +152,7 @@ void setup() {
   
   setup_wifi();
   client.setServer(mqtt_server,1883);
-  //client.setCallback();
+  client.setCallback(callback);
 
 
   
