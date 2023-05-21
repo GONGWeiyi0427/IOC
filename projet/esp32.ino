@@ -6,8 +6,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-const char* ssid = "Damn";        // Username of WIFI
-const char* password = "fuckinggood";   // Password for WIFI
+const char* ssid = "Gong";        // Username of WIFI
+const char* password = "weiyigong";   // Password for WIFI
   
 const char* mqtt_server = "172.20.10.8";    // IP of MQTT
 const char* mqtt_user = "gong";             // Username of MQTT
