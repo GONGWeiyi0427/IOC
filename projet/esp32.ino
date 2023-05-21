@@ -30,12 +30,24 @@ struct mailbox_s {    // Structure of the mailbox
 
 struct mailbox_s mb_publish = {.state = EMPTY};     // Initialization of the mailbox for the light intensity
 
+struct mailbox_s mb_led = {.state = EMPTY};
+
 struct lum {
   int timer;
   unsigned long period;
 };
 
 struct lum lum_publish;
+
+struct Led {
+  int timer;                                              // numéro du timer pour cette tâche utilisé par WaitFor
+  unsigned long period;                                   // periode de clignotement
+  int pin;                                                // numéro de la broche sur laquelle est la LED
+  int etat;                                               // L'etat de led, 1 s'allume, 0 s'etende
+  bool blink_led;                                         // Pour dire si le led a besoin de blink
+};
+
+struct Led led_blink;
 
 unsigned int waitFor(int timer, unsigned long period) {
   static unsigned long waitForTimer[MAX_WAIT_FOR_TIMER];  // There are as many timers as periodic tasks
@@ -44,6 +56,29 @@ unsigned int waitFor(int timer, unsigned long period) {
   if (delta < 0) delta = 1 + newTime;                     // In case the number of periods exceeds 2^32 
   if (delta) waitForTimer[timer] = newTime;               // Recording the new period number
   return delta;
+}
+
+void setup_led( struct Led * led, int timer, unsigned long period, byte pin) {//Setup pour led
+  led->timer = timer;
+  led->period = period;
+  led->pin = pin;
+  led->etat = 0;
+  led->blink_led = true;
+  pinMode(pin,OUTPUT);
+  digitalWrite(pin, led->etat);
+}
+
+void led_blink(struct Led *led_blink, mailbox_s *mb_led){
+  if (!(waitFor(led->timer,led->period))) return; //Si le timer pour led n'a pas passe le periode
+
+  if(mb_led -> state == FULL)//Si en cas de flag est FULL, donc il y'a une valeur dans le mailbox
+  {
+    led_blink -> period = mb_led->val;//Donc on va ecrire la valeur de period de mailbox dans le led
+    mb_led -> state = EMPTY;//Laisse le flag en EMPTY
+  }
+
+  digitalWrite(LED_BUILTIN,led->etat);//Ecrire la valeur dans le led
+  led->etat = 1-(led->etat);//Faire le clignotement
 }
 
 void setup_lum(struct lum *lum_publish, int timer, unsigned long period) {
@@ -117,11 +152,31 @@ void callback(const char* topic, byte* payload, unsigned int length) {
   buf[i] = '\0';
   String str = String(buf);
 
-  if (Topic == "topic_buzzer") {
+  if (Topic == "topic_led") {
+    if(str == "2")
+    {
+      mb_led.val = 2;
+    }
+    else if(str == "4")
+    {
+      mb_led.val = 4;
+    }
+    else if(str == "6")
+    {
+      mb_led.val = 6;
+    }
+    else if(str == "8")
+    {
+      mb_led.val = 8;
+    }
+    else if(str == "10")
+    {
+      mb_led.val = 10;
+    }
 
-  }
-  else if (Topic == "topic_led") {
-
+    mb_led.state = FULL;
+    led_blink(&led_blink,&mb_led);
+    
   }
 }
 */
@@ -131,6 +186,7 @@ void setup() {
   Serial.begin(9600);
   Wire.begin(4, 15);
   
+  setup_led(&led,1,1000000,LED_BUILTIN);//Timer 2
   setup_lum(&lum_publish, 0, 500000);  // Timer 1 and period 5000000
   
   setup_wifi();
