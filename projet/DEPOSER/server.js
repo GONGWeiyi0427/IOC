@@ -1,3 +1,10 @@
+/*
+Sorbonne University (M1 SESI)
+Binome : Kavish RAGHUBAR et Weiyi GONG
+Date : 21 Mai 2023
+Enseignant : Franck Wajsburt
+*/
+
 const { readFileSync, writeFileSync } = require('fs');
 const express = require('express');
 const mqtt = require('mqtt');
